@@ -41,7 +41,7 @@ router.get('/getTask/:tid', (req, res)=>{
 		if (error){throw error}
 		res.json(result)
 	})
-})
+}) 
 
 router.post('/edit',(req,res)=>{
 	const id = req.body.id;
