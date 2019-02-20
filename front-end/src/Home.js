@@ -7,7 +7,6 @@ class Home extends Component{
         super();
         this.state = {
             task: '',
-            date: ''
         }
         // this.addNewTask = this.addNewTask.bind(this)
         // this.changeDate = this.changeDate.bind(this)
@@ -37,7 +36,7 @@ class Home extends Component{
                 return (
                     <tr key={task.id}>
                         <td>{task.taskName}</td>
-                        <td>{moment(task.taskDate).format('M/DD/YYYY')}</td>
+                        <td>{moment(task.taskDate).format('MM/DD/YYYY')}</td>
                         <td><button className="btn red">Delete</button></td>
                         <td><Link to={"/edit/"+task.id}><button className="btn blue">Edit</button></Link></td>
                     </tr>

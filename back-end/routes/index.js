@@ -34,11 +34,26 @@ router.get('/getTask', (req, res)=>{
 router.get('/getTask/:tid', (req, res)=>{
 	const tid = req.params.tid;
 	const taskName = req.body.taskName
+	console.log(taskName)
 	const taskDate = req.body.taskDate
 	const getTasksQuery = `SELECT * FROM tasks WHERE id = ?`;
 	connection.query(getTasksQuery,[tid],(error, result)=>{
 		if (error){throw error}
 		res.json(result)
+	})
+})
+
+router.post('/edit',(req,res)=>{
+	const id = req.body.id;
+	const taskName = req.body.task.taskName
+	const taskDate = req.body.task.taskDate
+	console.log(taskDate)
+	const updateQuery = `UPDATE tasks SET taskName = ?, taskDate = ? WHERE id = ?`
+	connection.query(updateQuery,[taskName, taskDate, id],(error, result)=>{
+		if (error){throw error}
+		res.json({
+			msg: 'updated'
+		})
 	})
 })
 

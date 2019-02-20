@@ -1,12 +1,12 @@
 import React, {Component} from 'react'
 import axios from 'axios';
-import moment, { isMoment } from 'moment'
+import moment from 'moment'
 
 class Edit extends Component{
     constructor(){
         super()
         this.state = {
-            task: {},
+            task: {}
         }
     }
     componentDidMount(){
@@ -18,7 +18,7 @@ class Edit extends Component{
             url:   `http://localhost:3000/getTask/${tid}`
         }).then((taskFromBackEnd)=>{
             this.setState({
-                data: taskFromBackEnd.data.data
+                data: taskFromBackEnd.data
             })
         })
     }
@@ -46,6 +46,21 @@ class Edit extends Component{
 
     editTask = (event)=>{
         event.preventDefault()
+        axios({
+            method: 'POST',
+            data: {
+                task: this.state.task,
+                id: this.props.match.params.id
+            },
+            url: `http://localhost:3000/edit/`
+        }).then((jsonData)=>{
+            console.log(jsonData.data)
+            if(jsonData.data.msg === "updated"){
+                // then the backend succeeded
+                // moving on
+                this.props.history.push('/')
+            }
+        })
     }
 
     render(){
