@@ -4,15 +4,29 @@ import NavBar from './NavBar'
 import {BrowserRouter as Router, Route} from 'react-router-dom'
 import Home from './Home'
 import axios from 'axios'
+import Edit from './Edit'
+
 
 class App extends Component {
 	constructor(){
 		super()
 		this.state = {
-			taskArray: ''
+			taskArray: []
 		}
 	}
-	taskAdded(task, date){
+
+	componentDidMount(){
+		axios({
+			method: 'GET',
+			url: 'http://localhost:3000/getTask',
+		}).then((taskListFromBackEnd)=>{
+			this.setState({
+				taskArray: taskListFromBackEnd.data
+			})
+		})
+	}
+	
+	taskAdded = (task, date) => {
 		console.log(task, date)
 		axios({
 			method: 'POST',
@@ -22,14 +36,9 @@ class App extends Component {
 				taskDate: date
 			}
 		}).then((backEndResponse)=>{
-			backEndResponse.data.map((data)=>{
-				this.setState({
-					taskArray: data.taskName
-				})
+			this.setState({
+				taskArray: backEndResponse.data
 			})
-			// this.setState({
-				// taskArray: backEndResponse
-			// })
 		})
 	}
 	render() {
@@ -40,9 +49,10 @@ class App extends Component {
 					<NavBar/>
 					<Route exact path="/" render={()=>{
 						return (
-							<Home taskAdded={this.taskAdded}  />
+							<Home taskAdded={this.taskAdded} taskArray={this.state.taskArray} />
 						)	
 					}}/>
+					<Route exact path="/edit/:id" component={Edit}/>
 				</div>
 			</Router>
 		);

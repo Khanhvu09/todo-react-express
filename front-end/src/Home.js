@@ -1,4 +1,7 @@
 import React, {Component} from 'react'
+import moment from 'moment'
+import {Link} from 'react-router-dom'
+
 class Home extends Component{
     constructor(){
         super();
@@ -30,7 +33,17 @@ class Home extends Component{
     }
 
     render(){
-        console.log(this.props.taskArray)
+        const newArr = this.props.taskArray.map((task)=>{
+                return (
+                    <tr key={task.id}>
+                        <td>{task.taskName}</td>
+                        <td>{moment(task.taskDate).format('M/DD/YYYY')}</td>
+                        <td><button className="btn red">Delete</button></td>
+                        <td><Link to={"/edit/"+task.id}><button className="btn blue">Edit</button></Link></td>
+                    </tr>
+                ) 
+            }) 
+        // console.log(this.props.taskArray)
         return (
             <div className="to-do-app">
                 <div className="section no-pad-bot" id="index-banner">
@@ -40,7 +53,7 @@ class Home extends Component{
                             <h5 className="header col s12 light">Made with React and Express</h5>
                         </div>
                     </div>
-                </div>     
+                </div>    
                 <div className="container">
                     <form onSubmit={this.addNewTask} className="add-box">
                         <input onChange={this.changeTask} type="text" id="new-task" placeholder="New Task" value={this.state.task}/>
@@ -51,12 +64,13 @@ class Home extends Component{
                         <thead>
                             <tr>
                                 <th>Task</th>
+                                <th>Date</th>
                                 <th>Delete</th>
                                 <th>Edit</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {this.taskArray}
+                            {newArr}
                         </tbody>
                     </table>
                 </div>

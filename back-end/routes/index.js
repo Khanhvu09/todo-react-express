@@ -23,4 +23,23 @@ router.post('/addTask', (req, res)=>{
 	// res.json({taskName, taskDate})
 })
 
+router.get('/getTask', (req, res)=>{
+	const getTasksQuery = `SELECT * FROM tasks`
+	connection.query(getTasksQuery,(error, result)=>{
+		if(error){throw error}
+		res.json(result)
+	})
+})
+
+router.get('/getTask/:tid', (req, res)=>{
+	const tid = req.params.tid;
+	const taskName = req.body.taskName
+	const taskDate = req.body.taskDate
+	const getTasksQuery = `SELECT * FROM tasks WHERE id = ?`;
+	connection.query(getTasksQuery,[tid],(error, result)=>{
+		if (error){throw error}
+		res.json(result)
+	})
+})
+
 module.exports = router;
